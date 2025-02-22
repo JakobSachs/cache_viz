@@ -1,7 +1,7 @@
 use std::num::NonZero;
 
 fn main() {
-    println!("Hello, world!");
+    println!("Starting Cache Simulation...");
 
     let mut sim = backend::Simulation::new(
         NonZero::new(4).unwrap(),
@@ -14,13 +14,14 @@ fn main() {
 
     for i in 0..0x1000 {
         if i % 100 == 0 {
-            println!("iter: {}", i);
+            println!("Iteration: {:04}", i);
         }
         sim.step();
     }
 
-    println!("{:?}", sim.shared_stats.lock().unwrap());
-    for c in &sim.cores {
-        println!("{:?}", c.stats);
+    println!("\nSimulation Complete!");
+    println!("Shared Cache Stats: {:?}", sim.shared_stats.lock().unwrap());
+    for (i, c) in sim.cores.iter().enumerate() {
+        println!("Core {} Stats: {:?}", i + 1, c.stats);
     }
 }
