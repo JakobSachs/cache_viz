@@ -1,5 +1,5 @@
-use std::num::NonZero;
 use indicatif::ProgressBar;
+use std::num::NonZero;
 
 fn main() {
     println!("Starting Cache Simulation...");
@@ -17,10 +17,10 @@ fn main() {
     println!("Running Simulation...");
     println!("==============================");
 
-    let total_iterations = 0x1000;
+    let total_iterations = 0x10000;
     let progress_bar = ProgressBar::new(total_iterations);
 
-    for i in 0..total_iterations {
+    for _ in 0..total_iterations {
         progress_bar.inc(1);
         sim.step();
     }
@@ -30,8 +30,8 @@ fn main() {
     println!("\n==============================");
     println!("Simulation Complete!");
     println!("==============================");
-    println!("Shared Cache Stats: {:?}", sim.shared_stats.lock().unwrap());
+    println!("Shared Cache Stats: {}", sim.shared_stats.lock().unwrap());
     for (i, c) in sim.cores.iter().enumerate() {
-        println!("Core {} Stats: {:?}", i + 1, c.stats);
+        println!("Core {} Stats: {}", i + 1, c.stats);
     }
 }
