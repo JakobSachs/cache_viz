@@ -1,4 +1,5 @@
 use std::{
+    fmt,
     num::NonZeroU32,
     sync::{Arc, Mutex},
 };
@@ -11,6 +12,33 @@ pub struct CoreStats {
     read_miss: u32,
     write_hit: u32,
     write_miss: u32,
+}
+
+impl fmt::Display for CoreStats {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let total_reads = self.read_hit + self.read_miss;
+        let total_writes = self.write_hit + self.write_miss;
+
+        let read_hit_rate = if total_reads > 0 {
+            (self.read_hit as f64 / total_reads as f64) * 100.0
+        } else {
+            0.0
+        };
+
+        let write_hit_rate = if total_writes > 0 {
+            (self.write_hit as f64 / total_writes as f64) * 100.0
+        } else {
+            0.0
+        };
+
+        write!(
+            f,
+            "Read Hits: {}, Read Misses: {}, Read Hit Rate: {:.2}%\n\
+             Write Hits: {}, Write Misses: {}, Write Hit Rate: {:.2}%",
+            self.read_hit, self.read_miss, read_hit_rate,
+            self.write_hit, self.write_miss, write_hit_rate
+        )
+    }
 }
 
 pub struct Core {
