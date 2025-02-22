@@ -7,16 +7,19 @@ fn main() {
         NonZero::new(4).unwrap(),
         NonZero::new(0x400).unwrap(),
         NonZero::new(8).unwrap(),
-        NonZero::new(0x10000).unwrap(),
+        NonZero::new(0x1000).unwrap(),
         NonZero::new(8).unwrap(),
     )
     .unwrap();
 
-    for i in 0..0x100 {
-        println!("iter: {}", i);
+    for i in 0..0x1000 {
+        if i % 100 == 0 {
+            println!("iter: {}", i);
+        }
         sim.step();
     }
 
+    println!("{:?}", sim.shared_stats.lock().unwrap());
     for c in &sim.cores {
         println!("{:?}", c.stats);
     }
