@@ -77,9 +77,28 @@ impl Cache {
     }
 
     pub fn write(&mut self, addr: u32, val: u32) -> bool {
-        let _ = val;
-        let _ = addr;
-        true
+        let (_, idx, tag) = self.destruct_addr(addr);
+        assert!(idx < self.set_count);
+
+        let s = self.sets.get_mut(idx as usize).unwrap();
+        let tar = s.iter_mut().find(|l| l.tag == tag);
+        if let Some(target) = tar {
+            target.data = val;
+            target.lru = 0;
+            self.update_lru();
+            return true;
+        }
+
+        // Cache miss: find line with highest LRU counter to evict
+        let max_lru = s.iter().fold(0u32, |max, l| if l.lru > max { l.lru } else { max });
+        let target_line = s.iter_mut().find(|l| l.lru == max_lru).unwrap();
+
+        target_line.data = val;
+        target_line.lru = 0;
+        target_line.tag = tag;
+
+        self.update_lru();
+        return false;
     }
 
     /// Destructures a given address into its constituent parts: Offset, Index, Tag
