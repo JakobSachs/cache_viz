@@ -13,8 +13,8 @@ use crate::core::Core;
 #[derive(Default)]
 struct Stats {}
 
-struct Simulation {
-    cores: Vec<Core>,
+pub struct Simulation {
+    pub cores: Vec<Core>,
     shared_cache: Arc<Mutex<Cache>>,
     cycle: u32,
     stats: Stats,
