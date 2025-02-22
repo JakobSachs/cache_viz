@@ -1,23 +1,20 @@
 mod cache;
 mod core;
 
-use std::borrow::BorrowMut;
+use core::CoreStats;
 use std::num::NonZeroU32;
 use std::sync::{Arc, Mutex};
 
-use rand::{thread_rng, Rng};
+use rand::{rng, Rng};
 
 use crate::cache::Cache;
 use crate::core::Core;
 
-#[derive(Default)]
-struct Stats {}
-
 pub struct Simulation {
     pub cores: Vec<Core>,
     shared_cache: Arc<Mutex<Cache>>,
+    pub shared_stats: Arc<Mutex<CoreStats>>,
     cycle: u32,
-    stats: Stats,
 }
 
 impl Simulation {
@@ -33,26 +30,36 @@ impl Simulation {
             l2_cache_associativity,
         )?));
 
+        let shared_stats = Arc::new(Mutex::new(CoreStats::default()));
+
         let cores: Vec<Core> = (0..num_cores.get())
-            .map(|_| Core::new(l1_cache_size, l1_cache_associativity, shared_cache.clone()))
+            .map(|_| {
+                Core::new(
+                    l1_cache_size,
+                    l1_cache_associativity,
+                    shared_cache.clone(),
+                    shared_stats.clone(),
+                )
+            })
             .collect::<Result<_, ()>>()?;
 
         Ok(Simulation {
             cores,
             shared_cache,
             cycle: 0,
-            stats: Stats::default(),
+            shared_stats,
         })
     }
 
     pub fn step(&mut self) {
-        let mut rng = thread_rng();
+        self.cycle += 1;
+        let mut rng = rng();
 
         for core in &mut self.cores {
-            let addr: u32 = rng.random::<u32>() >> 24;
+            let addr: u32 = rng.random::<u32>() >> 20;
             let val: u32 = rng.random();
             let is_write: bool = rng.random();
-            let res = match is_write {
+            let _ = match is_write {
                 true => core.write(addr, val),
                 false => core.read(addr),
             };
