@@ -1,5 +1,5 @@
 use std::num::NonZero;
-use std::io::{self, Write};
+use indicatif::ProgressBar;
 
 fn main() {
     println!("Starting Cache Simulation...");
@@ -18,28 +18,16 @@ fn main() {
     println!("==============================");
 
     let total_iterations = 0x1000;
-    let bar_width = 50;
+    let progress_bar = ProgressBar::new(total_iterations);
 
     for i in 0..total_iterations {
-        if i % (total_iterations / bar_width) == 0 {
-            print!("\r[");
-            let pos = bar_width * i / total_iterations;
-            for _ in 0..pos {
-                print!("=");
-            }
-            for _ in pos..bar_width {
-                print!(" ");
-            }
-            print!("] {}%", (i * 100) / total_iterations);
-            io::stdout().flush().unwrap();
-        }
-        if i % 100 == 0 {
-            println!("Iteration: {:04}", i);
-        }
+        progress_bar.inc(1);
         sim.step();
     }
 
-    println!("\n\n==============================");
+    progress_bar.finish_with_message("Simulation Complete!");
+
+    println!("\n==============================");
     println!("Simulation Complete!");
     println!("==============================");
     println!("Shared Cache Stats: {:?}", sim.shared_stats.lock().unwrap());
