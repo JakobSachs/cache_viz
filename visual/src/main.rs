@@ -30,8 +30,8 @@ fn main() {
     println!("\n==============================");
     println!("Simulation Complete!");
     println!("==============================");
-    println!("Shared Cache Stats: {}", sim.shared_stats.lock().unwrap());
+    println!("Shared Cache Stats:\n{}", sim.shared_stats.lock().unwrap());
     for (i, c) in sim.cores.iter().enumerate() {
-        println!("Core {} Stats: {}", i + 1, c.stats);
+        println!("Core {} Stats:\n{}", i + 1, c.stats);
     }
 }
