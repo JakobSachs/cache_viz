@@ -33,10 +33,14 @@ impl fmt::Display for CoreStats {
 
         write!(
             f,
-            "Read Hits: {}, Read Misses: {}, Read Hit Rate: {:.2}%\n\
-             Write Hits: {}, Write Misses: {}, Write Hit Rate: {:.2}%",
-            self.read_hit, self.read_miss, read_hit_rate,
-            self.write_hit, self.write_miss, write_hit_rate
+            "\tRead Hits: {}, Read Misses: {}, Read Hit Rate: {:.2}%\n\
+             \tWrite Hits: {}, Write Misses: {}, Write Hit Rate: {:.2}%",
+            self.read_hit,
+            self.read_miss,
+            read_hit_rate,
+            self.write_hit,
+            self.write_miss,
+            write_hit_rate
         )
     }
 }

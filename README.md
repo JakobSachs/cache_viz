@@ -8,17 +8,6 @@ This project is a learning exercise to simulate cache behavior in a multi-core p
 - Tracks read and write operations, providing statistics on cache hits and misses.
 - Uses a simple random access pattern to simulate memory operations across multiple cores.
 
-## Setup
-
-To set up the project, ensure you have Rust installed on your system. You can install Rust using [rustup](https://rustup.rs/).
-
-Clone the repository and navigate to the project directory:
-
-```bash
-git clone <repository-url>
-cd <project-directory>
-```
-
 ## Running the Simulation
 
 To run the simulation, use the following command:

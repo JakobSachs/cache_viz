@@ -1,9 +1,4 @@
-use std::{
-    hint::assert_unchecked,
-    num::{NonZero, NonZeroU32, NonZeroUsize},
-};
-
-use rand::Rng;
+use std::num::NonZeroU32;
 
 // #[derive(Clone, Default)]
 // pub enum LineState {
@@ -24,8 +19,8 @@ pub struct CacheLine {
 }
 
 pub struct Cache {
-    size: NonZeroU32,
-    associativity: NonZeroU32,
+    // size: NonZeroU32,
+    // associativity: NonZeroU32,
     set_count: u32,
     sets: Vec<Vec<CacheLine>>,
 }
@@ -38,14 +33,20 @@ impl Cache {
         let sets = size.get() / (associativity.get() * 4); // recall we have 4 bytes/line
 
         return Ok(Cache {
-            size,
-            associativity,
+            // size,
+            // associativity,
             set_count: sets,
             sets: vec![vec![CacheLine::default(); associativity.get() as usize]; sets as usize],
         });
     }
 
-    pub fn update_lru(&mut self) {}
+    pub fn update_lru(&mut self) {
+        for s in &mut self.sets {
+            for l in s {
+                l.lru += 1;
+            }
+        }
+    }
 
     pub fn read(&mut self, addr: u32) -> bool {
         let (_, idx, tag) = self.destruct_addr(addr);
@@ -90,7 +91,9 @@ impl Cache {
         }
 
         // Cache miss: find line with highest LRU counter to evict
-        let max_lru = s.iter().fold(0u32, |max, l| if l.lru > max { l.lru } else { max });
+        let max_lru = s
+            .iter()
+            .fold(0u32, |max, l| if l.lru > max { l.lru } else { max });
         let target_line = s.iter_mut().find(|l| l.lru == max_lru).unwrap();
 
         target_line.data = val;
