@@ -14,6 +14,11 @@ fn main() {
     .unwrap();
 
     println!("==============================");
+    println!("Cache Configuration:");
+    println!("L1 Cache Size: {} bytes", 0x400);
+    println!("L1 Cache Associativity: {}", 8);
+    println!("L2 Cache Size: {} bytes", 0x1000);
+    println!("L2 Cache Associativity: {}", 8);
     println!("Running Simulation...");
     println!("==============================");
 
