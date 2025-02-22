@@ -5,7 +5,7 @@ use std::borrow::BorrowMut;
 use std::num::NonZeroU32;
 use std::sync::{Arc, Mutex};
 
-use rand::Rng;
+use rand::{thread_rng, Rng};
 
 use crate::cache::Cache;
 use crate::core::Core;
@@ -46,7 +46,7 @@ impl Simulation {
     }
 
     pub fn step(&mut self) {
-        let mut rng = rand::rng();
+        let mut rng = thread_rng();
 
         for core in &mut self.cores {
             let addr: u32 = rng.random::<u32>() >> 24;
