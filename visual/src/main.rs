@@ -8,6 +8,8 @@ const NUM_CORES: u32 = 4;
 const TOTAL_ITERATIONS: u64 = 0x1000;
 use std::num::NonZero;
 
+const ADDRESS_MASK: u32 = 0xFFF; // Mask to limit the address range
+
 fn main() {
     println!("Starting Cache Simulation...");
 

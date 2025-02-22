@@ -56,7 +56,7 @@ impl Simulation {
         let mut rng = rng();
 
         for core in &mut self.cores {
-            let addr: u32 = rng.random::<u32>() >> 20;
+            let addr: u32 = rng.random::<u32>() & visual::ADDRESS_MASK;
             let val: u32 = rng.random();
             let is_write: bool = rng.random();
             let _ = match is_write {
