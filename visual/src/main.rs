@@ -17,7 +17,7 @@ fn main() {
     println!("Running Simulation...");
     println!("==============================");
 
-    let total_iterations = 0x10000;
+    let total_iterations = 0x1000;
     let progress_bar = ProgressBar::new(total_iterations);
 
     for _ in 0..total_iterations {
@@ -29,9 +29,15 @@ fn main() {
 
     println!("\n==============================");
     println!("Simulation Complete!");
+    println!("==============================\n");
+    println!("Stats: \n");
+    println!(
+        "Shared Cache:\n==============================\n{}",
+        sim.shared_stats.lock().unwrap()
+    );
     println!("==============================");
-    println!("Shared Cache Stats:\n{}", sim.shared_stats.lock().unwrap());
     for (i, c) in sim.cores.iter().enumerate() {
         println!("Core {} Stats:\n{}", i + 1, c.stats);
     }
+    println!("==============================");
 }
