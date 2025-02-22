@@ -15,20 +15,15 @@ fn main() {
         l1_cache_associativity,
         l2_cache_size,
         l2_cache_associativity,
-        NonZero::new(4).unwrap(),
-        NonZero::new(0x400).unwrap(),
-        NonZero::new(8).unwrap(),
-        NonZero::new(0x1000).unwrap(),
-        NonZero::new(8).unwrap(),
     )
     .unwrap();
 
     println!("==============================");
     println!("Cache Configuration:");
     println!("L1 Cache Size: {} bytes", l1_cache_size);
-    println!("L1 Cache Associativity: {}", l1_cache_associativity);
+    println!("L1 Cache Associativity: {}-ways", l1_cache_associativity);
     println!("L2 Cache Size: {} bytes", l2_cache_size);
-    println!("L2 Cache Associativity: {}", l2_cache_associativity);
+    println!("L2 Cache Associativity: {}-ways", l2_cache_associativity);
     println!("Running Simulation...");
     println!("==============================");
 
