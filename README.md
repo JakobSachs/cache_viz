@@ -18,10 +18,7 @@ cargo run --release
 
 This will execute the simulation and print the cache configuration and statistics to the console.
 
-## Configuration
+## Ideas
 
-Cache sizes and associativity can be adjusted in the `visual/src/main.rs` file by modifying the `l1_cache_size`, `l1_cache_associativity`, `l2_cache_size`, and `l2_cache_associativity` variables.
-
-## License
-
-This project is for educational purposes and does not have a specific license.
+- Primary next goal is to write a proper graphical visualization for the caches etc
+- Implement MOESI cache coherence between local caches
