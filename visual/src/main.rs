@@ -1,4 +1,5 @@
 use std::num::NonZero;
+use std::io::{self, Write};
 
 fn main() {
     println!("Starting Cache Simulation...");
@@ -12,14 +13,35 @@ fn main() {
     )
     .unwrap();
 
-    for i in 0..0x1000 {
+    println!("==============================");
+    println!("Running Simulation...");
+    println!("==============================");
+
+    let total_iterations = 0x1000;
+    let bar_width = 50;
+
+    for i in 0..total_iterations {
+        if i % (total_iterations / bar_width) == 0 {
+            print!("\r[");
+            let pos = bar_width * i / total_iterations;
+            for _ in 0..pos {
+                print!("=");
+            }
+            for _ in pos..bar_width {
+                print!(" ");
+            }
+            print!("] {}%", (i * 100) / total_iterations);
+            io::stdout().flush().unwrap();
+        }
         if i % 100 == 0 {
             println!("Iteration: {:04}", i);
         }
         sim.step();
     }
 
-    println!("\nSimulation Complete!");
+    println!("\n\n==============================");
+    println!("Simulation Complete!");
+    println!("==============================");
     println!("Shared Cache Stats: {:?}", sim.shared_stats.lock().unwrap());
     for (i, c) in sim.cores.iter().enumerate() {
         println!("Core {} Stats: {:?}", i + 1, c.stats);
